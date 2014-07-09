@@ -3,12 +3,12 @@ django-robokassa
 
 Python API for www.robokassa.ru payment service
 
-1. Add to urls.py
+* Add to urls.py
 ```python
 url(r'^payment/', include("robokassa.urls")),
 ```
 
-2. Add to settings.py
+* Add to settings.py
 ```python
 ROBOKASSA_LOGIN = "your_login"
 ROBOKASSA_PWD1 = "password1"
@@ -17,13 +17,13 @@ ROBOKASSA_ORDER_MODEL = "yoursite.models.OrderModel"
 ROBOKASSA_SUCCESS_TEMPLATE = "payment_success.html"
 ROBOKASSA_FAIL_TEMPLATE = "payment_fail.html"
 ```
-3. Your order model should contains these fields:
+* Your order model should contains these fields:
 ```python
 status = models.SmallIntegerField(default=0)
 payed_date = models.DateTimeField(null=True,default=None)
 price = models.PositiveIntegerField()
 ```
-4. Connect to a signal, if you need it
+* Connect to a signal, if you need it
 ```python
 from robokassa.signals import payment_done
 from robokassa import send_sms, send_sms_async
@@ -33,11 +33,9 @@ def payment_done_callback(sender, **kwargs):
         send_sms_async(order.phone, "Congratulations !!!")
 payment_done.connect(payment_done_callback, dispatch_uid="payment_done")
 ```
-5. In the ```ROBOKASSA_SUCCESS_TEMPLATE``` and ```ROBOKASSA_FAIL_TEMPLATE``` you can use the ```order``` and ```request``` variable to display success text.
+* In the ```ROBOKASSA_SUCCESS_TEMPLATE``` and ```ROBOKASSA_FAIL_TEMPLATE``` you can use the ```order``` and ```request``` variable to display success text.
 
----------------------
-
-To create a new order use ```robokassa.get_payment_url``` function.
+* To create a new order use ```robokassa.get_payment_url``` function.
 
 ```python
 order = models.Order(status=0, price = 100)
