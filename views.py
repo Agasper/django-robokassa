@@ -83,5 +83,12 @@ def success(request):
 
 
 def fail(request):
-	return render_to_response(settings.ROBOKASSA_FAIL_TEMPLATE, dict(request=request))
+	order_id = int(request.REQUEST.get("InvId"))
+	order = None
+	try:
+		order = order_model.objects.get(id=order_id)
+	except ObjectDoesNotExist:
+		logger.error("payment_fail(): order %d does not exists" % order_id)
+
+	return render_to_response(settings.ROBOKASSA_FAIL_TEMPLATE, dict(request=request, order=order))
 
